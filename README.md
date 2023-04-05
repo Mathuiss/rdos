@@ -11,9 +11,9 @@ Arguments:
   <target>  The target host. Examples: 127.0.0.1:80, mywebsite.com:80
 
 Options:
-  -t, --threads <threads>  The size of the thread pool. Default: 64 [default: 64]
-  -s, --size <size>        The size of the payloads. Default: 64 [default: 64]
-  -d, --delay <delay>      The delay in miliseconds between sending the next payload. Default: 200 [default: 200]
+  -t, --threads <threads>  The size of the thread pool. [default: 64]
+  -s, --size <size>        The size of the payloads. [default: 64]
+  -d, --delay <delay>      The delay in miliseconds between sending the next payload. [default: 200]
   -h, --help               Print help
   -V, --version            Print version
 ```

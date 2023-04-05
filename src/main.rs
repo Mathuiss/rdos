@@ -22,7 +22,7 @@ fn main() {
                 .short('t')
                 .long("threads")
                 .default_value("64")
-                .help("The size of the thread pool. Default: 64"),
+                .help("The size of the thread pool."),
         )
         .arg(
             Arg::new("size")
@@ -30,7 +30,7 @@ fn main() {
                 .short('s')
                 .long("size")
                 .default_value("64")
-                .help("The size of the payloads. Default: 64"),
+                .help("The size of the payloads."),
         )
         .arg(
             Arg::new("delay")
@@ -38,7 +38,7 @@ fn main() {
                 .short('d')
                 .long("delay")
                 .default_value("200")
-                .help("The delay in miliseconds between sending the next payload. Default: 200"),
+                .help("The delay in miliseconds between sending the next payload."),
         );
 
     let matches = cmd.get_matches();
