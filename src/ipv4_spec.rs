@@ -8,6 +8,8 @@ pub struct IPv4Spec {
 }
 
 impl IPv4Spec {
+    // Simple implementation that parses string like localhost:8080 to IPv4Spec.
+    // Throws ParseError on parse failure.
     pub fn parse(ip_address: String) -> Result<IPv4Spec, IPv4SpecParseError> {
         let sp: Vec<&str> = ip_address.split(':').collect();
 
