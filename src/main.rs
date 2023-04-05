@@ -52,6 +52,7 @@ fn main() {
         .unwrap()
         .parse::<usize>()
         .expect("Threads must be a number of type usize");
+
     let payload_size = matches
         .get_one::<String>("size")
         .unwrap()

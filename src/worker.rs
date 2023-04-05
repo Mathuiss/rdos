@@ -70,7 +70,6 @@ impl TcpWorker {
                 Sec-Fetch-User: ?1 \
                 Sec-Fetch-Dest: document \
                 Accept-Encoding: gzip, deflate, br \
-                \
                 ", USER_AGENTS[rand::thread_rng().gen_range(0..USER_AGENTS.len())]).as_bytes()
         );
 
