@@ -61,20 +61,19 @@ impl TcpWorker {
 
         // Write initial bytes to TcpStream
         _ = stream.write(
-            format!("GET / HTTP/1.1 \
-                Host: localhost \
-                Connection: keep-alive 
-                Upgrade-Insecure-Requests: 1 \
-                User-Agent: {} \
-                Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8 \
-                Sec-GPC: 1 \
-                Accept-Language: en-US,en;q=0.9 \
-                Sec-Fetch-Site: none \
-                Sec-Fetch-Mode: navigate \
-                Sec-Fetch-User: ?1 \
-                Sec-Fetch-Dest: document \
-                Accept-Encoding: gzip, deflate, br \
-                ", USER_AGENTS[rand::thread_rng().gen_range(0..USER_AGENTS.len())]).as_bytes() // Random sampling of User-Agent header
+            format!("GET / HTTP/1.1\n\
+                Host: localhost\n\
+                Connection: keep-alive\n\
+                Upgrade-Insecure-Requests: 0\n\
+                User-Agent: {}\n\
+                Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8\n\
+                Sec-GPC: 1\n\
+                Accept-Language: en-US,en;q=0.9\n\
+                Sec-Fetch-Site: none\n\
+                Sec-Fetch-Mode: navigate\n\
+                Sec-Fetch-User: ?1\n\
+                Sec-Fetch-Dest: document\n\
+                Accept-Encoding: gzip, deflate, br\n\n", USER_AGENTS[rand::thread_rng().gen_range(0..USER_AGENTS.len())]).as_bytes() // Random sampling of User-Agent header
         );
 
         return Ok(stream);
