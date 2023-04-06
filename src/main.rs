@@ -64,19 +64,19 @@ rdos is a tool used for performing DOS attacks on web servers.",
         .get_one::<String>("threads")
         .unwrap()
         .parse::<usize>()
-        .expect("Threads must be a number of type usize");
+        .expect("Threads must be a number of type usize.");
 
     let payload_size = matches
         .get_one::<String>("size")
         .unwrap()
         .parse::<usize>()
-        .expect("Size must be a number of type usize");
+        .expect("Size must be a number of type usize.");
 
     let delay_ms = matches
         .get_one::<String>("delay")
         .unwrap()
         .parse::<usize>()
-        .expect("Delay must be a number of type usize");
+        .expect("Delay must be a number of type usize.");
 
     // parse target IP to IPv4Spec struct.
     let ip_address = ipv4_spec::IPv4Spec::parse(target.to_string()).unwrap();
