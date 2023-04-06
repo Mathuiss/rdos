@@ -11,7 +11,17 @@ fn main() {
     // Initialize arg parse tree
     let cmd = Command::new("rdos")
         .version("1.0")
-        .about("rdos is a tool made for DOS attacks on web servers.")
+        .about(
+            "
+.______       _______   ______        _______.
+|   _  \\     |       \\ /  __  \\      /       |
+|  |_)  |    |  .--.  |  |  |  |    |   (----`
+|      /     |  |  |  |  |  |  |     \\   \\    
+|  |\\  \\----.|  '--'  |  `--'  | .----)   |   
+| _| `._____||_______/ \\______/  |_______/    
+                                              
+rdos is a tool used for performing DOS attacks on web servers.",
+        )
         .arg(
             Arg::new("target")
                 .required(true)
@@ -39,7 +49,7 @@ fn main() {
                 .short('d')
                 .long("delay")
                 .default_value("200")
-                .help("The delay in miliseconds between sending the next payload."),
+                .help("The delay in miliseconds until sending the next payload."),
         );
 
     // Get matches from input args
