@@ -8,7 +8,7 @@ mod ipv4_spec;
 mod worker;
 
 fn main() {
-    // Initialize arg parse tree
+    // Initialize arg parse tree.
     let cmd = Command::new("rdos")
         .version("1.0")
         .about(
@@ -52,7 +52,7 @@ rdos is a tool used for performing DOS attacks on web servers.",
                 .help("The delay in miliseconds until sending the next payload."),
         );
 
-    // Get matches from input args
+    // Get matches from input args.
     let matches = cmd.get_matches();
 
     // Set init params
@@ -78,7 +78,7 @@ rdos is a tool used for performing DOS attacks on web servers.",
         .parse::<usize>()
         .expect("Delay must be a number of type usize");
 
-    // parse target IP to IPv4Spec struct
+    // parse target IP to IPv4Spec struct.
     let ip_address = ipv4_spec::IPv4Spec::parse(target.to_string()).unwrap();
 
     // Run the application
