@@ -92,7 +92,7 @@ fn run(ip_address: IPv4Spec, thread_count: usize, payload_size: usize, delay_ms:
         ip_address.get_port()
     );
 
-    // Init the vec that holds the threads
+    // Init the vec that holds the threads.
     let mut thread_pool = Vec::new();
 
     // Spawn threads and add thread to thread_pool vec
@@ -124,7 +124,7 @@ fn run_worker(ip_address: IPv4Spec, payload_size: usize, delay_ms: usize) {
     println!("Worker connected. Starting DOS.");
 
     loop {
-        // If the worker is finished, it will restart its internal TcpStream
+        // If the worker is finished, it will restart its internal TcpStream.
         if worker.finished() {
             println!("Worker disconnected. Restarting.");
 

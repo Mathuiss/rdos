@@ -51,7 +51,7 @@ impl TcpWorker {
     }
 
     fn init(ip_address: IPv4Spec) -> std::io::Result<TcpStream> {
-        // TcpStream::connect() is the only valid way to construct TcpStream
+        // TcpStream::connect() is the only valid way to construct TcpStream.
         // There is no TcpStream::new(). This is why I created the reusable TcpWorker::init() method.
         let mut stream = TcpStream::connect(format!(
             "{}:{}",
@@ -59,7 +59,7 @@ impl TcpWorker {
             ip_address.get_port()
         ))?;
 
-        // Write initial bytes to TcpStream
+        // Write initial bytes to TcpStream.
         _ = stream.write(
             format!("GET / HTTP/1.1\n\
                 Host: localhost\n\
